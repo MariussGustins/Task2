@@ -74,5 +74,10 @@ namespace Task2.Services
 
             return true;
         }
+
+        public async Task<bool> ApartmentExistsAsync(int id)
+        {
+            return await _context.Apartments.AnyAsync(e => e.Id == id);
+        }
     }
 }
