@@ -10,6 +10,8 @@ namespace Task2.Interface
         Task<int> CreateHouseAsync(HouseDto houseDto);
         Task<bool> UpdateHouseAsync(int id, HouseDto houseDto);
         Task<bool> DeleteHouseAsync(int id);
+
+        Task<bool> HouseExistsAsync(int id);
     }
 
 

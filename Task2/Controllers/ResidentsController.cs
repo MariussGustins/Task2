@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Task2.Interface;
 using Task2.Models;
 
 namespace Task2.Controllers
@@ -13,35 +14,28 @@ namespace Task2.Controllers
     [ApiController]
     public class ResidentsController : ControllerBase
     {
-        private readonly EstateContext _context;
+        private readonly IResidentService _residentService;
 
-        public ResidentsController(EstateContext context)
+        public ResidentsController(IResidentService residentService)
         {
-            _context = context;
+            _residentService = residentService;
         }
 
         // GET: api/Residents
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Resident>>> GetResidents()
         {
-          if (_context.Residents == null)
-          {
-              return NotFound();
-          }
-            return await _context.Residents.ToListAsync();
+         var residents = await _residentService.GetResidentsAsync();
+            return Ok(residents);
         }
 
         // GET: api/Residents/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Resident>> GetResident(int id)
         {
-          if (_context.Residents == null)
-          {
-              return NotFound();
-          }
-            var resident = await _context.Residents.FindAsync(id);
+          var resident = await _residentService.GetResidentAsync(id);
 
-            if (resident == null)
+            if(resident == null)
             {
                 return NotFound();
             }
@@ -52,29 +46,13 @@ namespace Task2.Controllers
         // PUT: api/Residents/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutResident(int id, Resident resident)
+        public async Task<IActionResult> PutResident(int id, ResidentDto residentDto)
         {
-            if (id != resident.Id)
-            {
-                return BadRequest();
-            }
+            var result = await _residentService.UpdateResidentAsync(id, residentDto);
 
-            _context.Entry(resident).State = EntityState.Modified;
-
-            try
+            if (!result)
             {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ResidentExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
 
             return NoContent();
@@ -83,41 +61,26 @@ namespace Task2.Controllers
         // POST: api/Residents
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Resident>> PostResident(Resident resident)
+        public async Task<ActionResult<Resident>> PostResident(ResidentDto residentDto)
         {
-          if (_context.Residents == null)
-          {
-              return Problem("Entity set 'EstateContext.Residents'  is null.");
-          }
-            _context.Residents.Add(resident);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetResident), new { id = resident.Id }, resident);
+          var residentId = await _residentService.CreateResidentAsync(residentDto);
+            return CreatedAtAction(nameof(GetResident), new { id = residentId }, null);
         }
 
         // DELETE: api/Residents/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteResident(int id)
         {
-            if (_context.Residents == null)
-            {
-                return NotFound();
-            }
-            var resident = await _context.Residents.FindAsync(id);
-            if (resident == null)
+            var residentExists = await _residentService.ResidentExistsAsync(id);
+            if (!residentExists)
             {
                 return NotFound();
             }
 
-            _context.Residents.Remove(resident);
-            await _context.SaveChangesAsync();
-
+            await _residentService.DeleteResidentAsync(id);
             return NoContent();
         }
 
-        private bool ResidentExists(int id)
-        {
-            return _context.Residents.Any(e => e.Id == id);
-        }
+       
     }
 }
