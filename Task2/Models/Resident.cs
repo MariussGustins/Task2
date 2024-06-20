@@ -12,8 +12,9 @@ namespace Task2.Models
 
         public int PhoneNumber { get; set; }
         public string Email {  get; set; }
-
         public int ApartmentId { get; set; }
         public Apartment Apartment { get; set; }
+        
+        public ICollection<Apartment> Apartments { get; set; }
     }
 }

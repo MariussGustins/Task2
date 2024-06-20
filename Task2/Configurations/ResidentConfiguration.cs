@@ -17,11 +17,12 @@ namespace Task2.Configurations
             builder.Property(r => r.PhoneNumber).IsRequired();
             builder.Property(r => r.Email).IsRequired();
 
+            
             // Relationships
-            builder.HasOne(r => r.Apartment)
-                .WithMany(a => a.Residents)
-                .HasForeignKey(r => r.ApartmentId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.HasMany(r => r.Apartments)
+                .WithOne(a => a.PrimaryResident)
+                .HasForeignKey(a => a.PrimaryResidentId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

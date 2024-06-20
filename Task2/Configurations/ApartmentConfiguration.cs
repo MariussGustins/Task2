@@ -14,9 +14,9 @@ namespace Task2.Configurations
             builder.Property(a => a.Floor).IsRequired();
 
             // Relationships
-            builder.HasOne(a => a.House)
-                .WithMany(h => h.Apartments)
-                .HasForeignKey(a => a.HouseId)
+            builder.HasMany(a => a.Residents)
+                .WithOne(r => r.Apartment)
+                .HasForeignKey(r => r.ApartmentId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }
