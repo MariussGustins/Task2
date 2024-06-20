@@ -1,4 +1,4 @@
-﻿namespace Task2.Models
+﻿namespace Task2.DTOs
 {
     public class HouseDto
     {

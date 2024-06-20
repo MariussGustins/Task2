@@ -1,4 +1,4 @@
-﻿namespace Task2.Models
+﻿namespace Task2.DTOs
 {
     public class ResidentDto
     {
@@ -8,5 +8,6 @@
         public DateOnly Birthday { get; set; }
         public int PhoneNumber { get; set; }
         public string Email { get; set; }
+        public bool IsOwner { get; set; }
     }
 }

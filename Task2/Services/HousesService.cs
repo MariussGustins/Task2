@@ -1,46 +1,44 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Task2.Interface;
 using Task2.Models;
+using Task2.DTOs;
+using AutoMapper;
 
 namespace Task2.Services
 {
     public class HousesService : IHousesService
     {
         private readonly EstateContext _context;
+        private readonly IMapper _mapper;
 
-        public HousesService(EstateContext context)
+        public HousesService(EstateContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-
-        public async Task<IEnumerable<House>> GetHousesAsync()
+        public async Task<IEnumerable<HouseDto>> GetHousesAsync()
         {
-            return await _context.Houses.ToListAsync();
+            var houses = await _context.Houses.ToListAsync();
+            return _mapper.Map<IEnumerable<HouseDto>>(houses);
         }
 
-        public async Task<House> GetHouseAsync(int id)
+        public async Task<HouseDto> GetHouseAsync(int id)
         {
-            return await _context.Houses.FindAsync(id);
+            var house = await _context.Houses.FindAsync(id);
+            return _mapper.Map<HouseDto>(house);
         }
 
         public async Task<int> CreateHouseAsync(HouseDto houseDto)
         {
-            var house = new House
-            {
-                Number = houseDto.Number,
-                Street = houseDto.Street,
-                City = houseDto.City,
-                Country = houseDto.Country,
-                Postcode = houseDto.Postcode
-                
-            };
+            var house = _mapper.Map<House>(houseDto);
 
             _context.Houses.Add(house);
             await _context.SaveChangesAsync();
 
             return house.Id;
         }
+
         public async Task<bool> UpdateHouseAsync(int id, HouseDto houseDto)
         {
             var house = await _context.Houses.FindAsync(id);
@@ -48,11 +46,7 @@ namespace Task2.Services
             if (house == null)
                 return false;
 
-            house.Number = houseDto.Number;
-            house.Street = houseDto.Street;
-            house.City = houseDto.City;
-            house.Country = houseDto.Country;
-            house.Postcode = houseDto.Postcode;
+            _mapper.Map(houseDto, house);
 
             _context.Entry(house).State = EntityState.Modified;
             await _context.SaveChangesAsync();

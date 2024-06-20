@@ -1,39 +1,37 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Task2.Interface;
 using Task2.Models;
+using Task2.DTOs;
+using AutoMapper;
 
 namespace Task2.Services
 {
-    public class ResidentService : IResidentService
+    public class ResidentsService : IResidentService
     {
         private readonly EstateContext _context;
+        private readonly IMapper _mapper;
 
-        public ResidentService(EstateContext context)
+        public ResidentsService(EstateContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable <Resident>> GetResidentsAsync()
+        public async Task<IEnumerable<ResidentDto>> GetResidentsAsync()
         {
-            return await _context.Residents.ToListAsync();
+            var residents = await _context.Residents.ToListAsync();
+            return _mapper.Map<IEnumerable<ResidentDto>>(residents);
         }
 
-        public async Task<Resident> GetResidentAsync(int id)
+        public async Task<ResidentDto> GetResidentAsync(int id)
         {
-            return await _context.Residents.FindAsync(id);
+            var resident = await _context.Residents.FindAsync(id);
+            return _mapper.Map<ResidentDto>(resident);
         }
 
         public async Task<int> CreateResidentAsync(ResidentDto residentDto)
         {
-            var resident = new Resident
-            {
-                Name = residentDto.Name,
-                LastName = residentDto.LastName,
-                PersonalNumber = residentDto.PersonalNumber,
-                Birthday = residentDto.Birthday,
-                PhoneNumber = residentDto.PhoneNumber,
-                Email = residentDto.Email,
-            };
+            var resident = _mapper.Map<Resident>(residentDto);
 
             _context.Residents.Add(resident);
             await _context.SaveChangesAsync();
@@ -46,20 +44,14 @@ namespace Task2.Services
             var resident = await _context.Residents.FindAsync(id);
 
             if (resident == null)
-            return false;
+                return false;
 
-            resident.Name = residentDto.Name;
-            resident.LastName = residentDto.LastName;
-            resident.PersonalNumber = residentDto.PersonalNumber;
-            resident.Birthday = residentDto.Birthday;
-            resident.PhoneNumber = residentDto.PhoneNumber;
-            resident.Email = residentDto.Email;
+            _mapper.Map(residentDto, resident);
 
             _context.Entry(resident).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return true;
-
         }
 
         public async Task<bool> DeleteResidentAsync(int id)
@@ -75,10 +67,9 @@ namespace Task2.Services
             return true;
         }
 
-        public async Task<bool>ResidentExistsAsync(int id)
+        public async Task<bool> ResidentExistsAsync(int id)
         {
             return await _context.Residents.AnyAsync(e => e.Id == id);
         }
-
     }
 }

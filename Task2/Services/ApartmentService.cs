@@ -1,46 +1,42 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Task2.Interface;
 using Task2.Models;
+using Task2.DTOs;
+using AutoMapper;
 
 namespace Task2.Services
 {
-    public class ApartmentService: IApartmentService
+    public class ApartmentService : IApartmentService
     {
         private readonly EstateContext _context;
+        private readonly IMapper _mapper;
 
-        public ApartmentService(EstateContext context)
+        public ApartmentService(EstateContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<Apartment>> GetApartmentsAsync()
+        public async Task<IEnumerable<ApartmentDto>> GetApartmentsAsync()
         {
-            return await _context.Apartments.ToListAsync();
+            var apartments = await _context.Apartments.ToListAsync();
+            return _mapper.Map<IEnumerable<ApartmentDto>>(apartments);
         }
 
-        public async Task<Apartment> GetApartmentAsync(int id)
+        public async Task<ApartmentDto> GetApartmentAsync(int id)
         {
-            return await _context.Apartments.FindAsync(id);
+            var apartment = await _context.Apartments.FindAsync(id);
+            return _mapper.Map<ApartmentDto>(apartment);
         }
 
-        public async Task<int> CreateApartmentAsync(ApartmentDto ApartmentDto)
+        public async Task<int> CreateApartmentAsync(ApartmentDto apartmentDto)
         {
-            var apartment = new Apartment
-            {
-                Number = ApartmentDto.Number,
-                Floor = ApartmentDto.Floor,
-                Rooms = ApartmentDto.Rooms,
-                NumberOfResidents = ApartmentDto.NumberOfResidents,
-                FullArea = ApartmentDto.FullArea,
-                LivingArea = ApartmentDto.LivingArea,
+            var apartment = _mapper.Map<Apartment>(apartmentDto);
 
-
-            };
             _context.Apartments.Add(apartment);
             await _context.SaveChangesAsync();
 
             return apartment.Id;
-
         }
 
         public async Task<bool> UpdateApartmentAsync(int id, ApartmentDto apartmentDto)
@@ -50,18 +46,14 @@ namespace Task2.Services
             if (apartment == null)
                 return false;
 
-            apartment.Number = apartmentDto.Number;
-            apartment.Floor = apartmentDto.Floor;
-            apartment.Rooms = apartmentDto.Rooms;
-            apartment.NumberOfResidents = apartmentDto.NumberOfResidents;
-            apartment.FullArea = apartmentDto.FullArea;
-            apartment.LivingArea = apartmentDto.LivingArea;
+            _mapper.Map(apartmentDto, apartment);
 
             _context.Entry(apartment).State = EntityState.Modified;
             await _context.SaveChangesAsync();
 
             return true;
         }
+
         public async Task<bool> DeleteApartmentAsync(int id)
         {
             var apartment = await _context.Apartments.FindAsync(id);
