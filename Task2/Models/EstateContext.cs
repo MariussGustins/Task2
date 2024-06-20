@@ -145,7 +145,8 @@ namespace Task2.Models
                     Birthday = new DateOnly(1985, 4, 23),
                     PhoneNumber = 27497659,
                     Email = "john.doe@example.com",
-                    ApartmentId = 1
+                    ApartmentId = 1,
+                    IsOwner = true
                 },
                 new Resident
                 {
@@ -156,7 +157,8 @@ namespace Task2.Models
                     Birthday = new DateOnly(1985, 8, 20),
                     PhoneNumber = 274547639,
                     Email = "jane.smith@example.com",
-                    ApartmentId = 2 
+                    ApartmentId = 2,
+                    IsOwner = true
                 },
                 new Resident
                 {
@@ -167,7 +169,8 @@ namespace Task2.Models
                     Birthday = new DateOnly(1982, 10, 12),
                     PhoneNumber = 23494655,
                     Email = "michael.johnson@example.com",
-                    ApartmentId = 2 
+                    ApartmentId = 2,
+                    IsOwner = false
                 },
                 new Resident
                 {
@@ -178,7 +181,8 @@ namespace Task2.Models
                     Birthday = new DateOnly(1995, 3, 25),
                     PhoneNumber = 26497153,
                     Email = "emily.williams@example.com",
-                    ApartmentId = 3 
+                    ApartmentId = 3,
+                    IsOwner = true
                 }
                 );
         }

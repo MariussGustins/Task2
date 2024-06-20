@@ -15,6 +15,8 @@ namespace Task2.Models
         public int ApartmentId { get; set; }
         public Apartment Apartment { get; set; }
         
+        public bool IsOwner { get; set; }
+        
         public ICollection<Apartment> Apartments { get; set; }
     }
 }
