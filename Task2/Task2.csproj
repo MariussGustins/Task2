@@ -21,4 +21,34 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="Migrations\20240621104316_AddPrimaryResidentIdToApartment.cs" />
+    <Compile Remove="Migrations\20240621104316_AddPrimaryResidentIdToApartment.Designer.cs" />
+    <Compile Remove="estate-management-app\**" />
+    <Compile Remove="Migrations\20240621112014_FixApartmentConfiguration.cs" />
+    <Compile Remove="Migrations\20240621112014_FixApartmentConfiguration.Designer.cs" />
+    <Compile Remove="Migrations\20240621111623_FixPrimaryResidentIdColumn.cs" />
+    <Compile Remove="Migrations\20240621111623_FixPrimaryResidentIdColumn.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Remove="estate-management-app\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="estate-management-app\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="estate-management-app\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="estate-management-app\angular.json" />
+    <_ContentIncludedByDefault Remove="estate-management-app\package.json" />
+    <_ContentIncludedByDefault Remove="estate-management-app\tsconfig.app.json" />
+    <_ContentIncludedByDefault Remove="estate-management-app\tsconfig.json" />
+    <_ContentIncludedByDefault Remove="estate-management-app\tsconfig.spec.json" />
+  </ItemGroup>
+
 </Project>

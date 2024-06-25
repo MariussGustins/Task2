@@ -8,9 +8,7 @@ using Task2.Mappings;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
+builder.Services.AddControllers();
 
 // Configure Entity Framework to use SQL Server
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -21,7 +19,6 @@ var mapperConfig = new MapperConfiguration(mc =>
 {
     mc.AddProfile(new MappingProfile());
 });
-
 IMapper mapper = mapperConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
@@ -29,6 +26,16 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<IHousesService, HousesService>();
 builder.Services.AddScoped<IResidentService, ResidentsService>();
 builder.Services.AddScoped<IApartmentService, ApartmentService>();
+
+// CORS configuration
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularApp",
+        builder => builder
+            .WithOrigins("http://localhost:4200") 
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -44,6 +51,11 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRouting();
+
+// Enable CORS middleware
+app.UseCors("AllowAngularApp");
 
 app.UseAuthorization();
 

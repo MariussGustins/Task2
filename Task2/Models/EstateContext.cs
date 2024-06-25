@@ -6,9 +6,10 @@ namespace Task2.Models
     public class EstateContext : DbContext
     {
         public EstateContext(DbContextOptions<EstateContext> options)
-        : base(options)
+            : base(options)
         {
         }
+
         public DbSet<House> Houses { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
         public DbSet<Resident> Residents { get; set; }
@@ -18,7 +19,7 @@ namespace Task2.Models
             modelBuilder.ApplyConfiguration(new HouseConfiguration());
             modelBuilder.ApplyConfiguration(new ApartmentConfiguration());
             modelBuilder.ApplyConfiguration(new ResidentConfiguration());
-            
+
             modelBuilder.Entity<House>()
                 .HasKey(h => h.Id);
 
@@ -39,9 +40,16 @@ namespace Task2.Models
                 .ValueGeneratedOnAdd();
 
             modelBuilder.Entity<Apartment>()
+                .HasOne(a => a.PrimaryResident)
+                .WithMany()
+                .HasForeignKey(a => a.PrimaryResidentId)
+                .OnDelete(DeleteBehavior.NoAction); // Ensure correct delete behavior
+
+            modelBuilder.Entity<Apartment>()
                 .HasMany(a => a.Residents)
                 .WithOne(r => r.Apartment)
-                .HasForeignKey(r => r.ApartmentId);
+                .HasForeignKey(r => r.ApartmentId)
+                .OnDelete(DeleteBehavior.Cascade); // Ensure correct delete behavior
 
             modelBuilder.Entity<Resident>()
                 .HasKey(r => r.Id);
@@ -50,6 +58,9 @@ namespace Task2.Models
                 .Property(r => r.Id)
                 .ValueGeneratedOnAdd();
 
+            modelBuilder.Entity<Resident>()
+                .HasIndex(r => r.PersonalNumber)
+                .IsUnique();
             //seed for Houses
             modelBuilder.Entity<House>().HasData(
                 new House

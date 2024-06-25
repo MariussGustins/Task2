@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Task2.Models;
 
@@ -11,9 +12,11 @@ using Task2.Models;
 namespace Task2.Migrations
 {
     [DbContext(typeof(EstateContext))]
-    partial class EstateContextModelSnapshot : ModelSnapshot
+    [Migration("20240621105914_AddPrimaryResidentIdColumn")]
+    partial class AddPrimaryResidentIdColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,10 +51,7 @@ namespace Task2.Migrations
                     b.Property<int>("NumberOfResidents")
                         .HasColumnType("int");
 
-                    b.Property<int?>("PrimaryResidentId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ResidentId")
+                    b.Property<int>("PrimaryResidentId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rooms")
@@ -62,8 +62,6 @@ namespace Task2.Migrations
                     b.HasIndex("HouseId");
 
                     b.HasIndex("PrimaryResidentId");
-
-                    b.HasIndex("ResidentId");
 
                     b.ToTable("Apartments");
 
@@ -77,6 +75,7 @@ namespace Task2.Migrations
                             LivingArea = 38.5,
                             Number = 5,
                             NumberOfResidents = 2,
+                            PrimaryResidentId = 0,
                             Rooms = 1
                         },
                         new
@@ -88,6 +87,7 @@ namespace Task2.Migrations
                             LivingArea = 68.5,
                             Number = 3,
                             NumberOfResidents = 2,
+                            PrimaryResidentId = 0,
                             Rooms = 2
                         },
                         new
@@ -99,6 +99,7 @@ namespace Task2.Migrations
                             LivingArea = 86.5,
                             Number = 1,
                             NumberOfResidents = 2,
+                            PrimaryResidentId = 0,
                             Rooms = 3
                         },
                         new
@@ -110,6 +111,7 @@ namespace Task2.Migrations
                             LivingArea = 68.5,
                             Number = 2,
                             NumberOfResidents = 1,
+                            PrimaryResidentId = 0,
                             Rooms = 2
                         },
                         new
@@ -121,6 +123,7 @@ namespace Task2.Migrations
                             LivingArea = 45.899999999999999,
                             Number = 6,
                             NumberOfResidents = 1,
+                            PrimaryResidentId = 0,
                             Rooms = 1
                         });
                 });
@@ -209,7 +212,7 @@ namespace Task2.Migrations
 
                     b.Property<string>("PersonalNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("PhoneNumber")
                         .HasColumnType("int");
@@ -217,9 +220,6 @@ namespace Task2.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApartmentId");
-
-                    b.HasIndex("PersonalNumber")
-                        .IsUnique();
 
                     b.ToTable("Residents");
 
@@ -283,13 +283,10 @@ namespace Task2.Migrations
                         .IsRequired();
 
                     b.HasOne("Task2.Models.Resident", "PrimaryResident")
-                        .WithMany()
-                        .HasForeignKey("PrimaryResidentId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Task2.Models.Resident", null)
                         .WithMany("Apartments")
-                        .HasForeignKey("ResidentId");
+                        .HasForeignKey("PrimaryResidentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("House");
 
