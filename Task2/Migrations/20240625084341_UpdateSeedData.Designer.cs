@@ -12,8 +12,8 @@ using Task2.Models;
 namespace Task2.Migrations
 {
     [DbContext(typeof(EstateContext))]
-    [Migration("20240621111434_UpdateApartmentsWithPrimaryResidentId")]
-    partial class UpdateApartmentsWithPrimaryResidentId
+    [Migration("20240625084341_UpdateSeedData")]
+    partial class UpdateSeedData
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -80,6 +80,7 @@ namespace Task2.Migrations
                             LivingArea = 38.5,
                             Number = 5,
                             NumberOfResidents = 2,
+                            PrimaryResidentId = 1,
                             Rooms = 1
                         },
                         new
@@ -91,6 +92,7 @@ namespace Task2.Migrations
                             LivingArea = 68.5,
                             Number = 3,
                             NumberOfResidents = 2,
+                            PrimaryResidentId = 2,
                             Rooms = 2
                         },
                         new
@@ -124,6 +126,7 @@ namespace Task2.Migrations
                             LivingArea = 45.899999999999999,
                             Number = 6,
                             NumberOfResidents = 1,
+                            PrimaryResidentId = 3,
                             Rooms = 1
                         });
                 });
@@ -200,7 +203,10 @@ namespace Task2.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsOwner")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("IsOwner");
 
                     b.Property<string>("LastName")
                         .IsRequired()

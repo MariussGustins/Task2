@@ -14,18 +14,21 @@ namespace Task2.Migrations
         {
             migrationBuilder.InsertData(
                 table: "Apartments",
-                columns: new[] { "Id", "Floor", "FullArea", "HouseId", "LivingArea", "Number", "NumberOfResidents", "Rooms" },
+                columns: new[]
+                {
+                    "Id", "Number", "Floor", "Rooms", "NumberOfResidents", "FullArea", "LivingArea", "HouseId",
+                    "PrimaryResidentId"
+                },
                 values: new object[,]
                 {
-                    { 1, 2, 40.5, 1, 38.5, 5, 2, 1 },
-                    { 2, 2, 70.5, 1, 68.5, 3, 2, 2 },
-                    { 3, 1, 93.5, 2, 86.5, 1, 2, 3 },
-                    { 4, 1, 80.5, 2, 68.5, 2, 1, 2 },
-                    { 5, 2, 50.0, 2, 45.899999999999999, 6, 1, 1 }
+                    { 1, 5, 2, 1, 2, 40.5, 38.5, 1, 1 }, 
+                    { 2, 3, 2, 2, 2, 70.5, 68.5, 1, null },
+                    { 3, 1, 1, 3, 2, 93.5, 86.5, 2, 2 }, 
+                    { 4, 2, 1, 2, 1, 80.5, 68.5, 2, null }, 
+                    { 5, 6, 2, 1, 1, 50.0, 45.9, 2, 3 } 
                 });
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(

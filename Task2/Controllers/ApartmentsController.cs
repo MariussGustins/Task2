@@ -54,6 +54,20 @@ namespace Task2.Controllers
             var apartmentId = await _apartmentService.CreateApartmentAsync(apartmentDto);
             return CreatedAtAction(nameof(GetApartment), new { id = apartmentId }, null);
         }
+        
+        [HttpPost("update-primary-residents")]
+        public async Task<IActionResult> UpdatePrimaryResidents()
+        {
+            try
+            {
+                await _apartmentService.UpdatePrimaryResidentsAsync();
+                return Ok("Primary residents updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteApartment(int id)

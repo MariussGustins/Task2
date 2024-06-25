@@ -14,5 +14,7 @@ namespace Task2.Interface
         Task<bool> UpdateApartmentAsync(int id, ApartmentDto apartmentDto);
         Task<bool> DeleteApartmentAsync(int id);
         Task<bool> ApartmentExistsAsync(int id);
+        
+        Task UpdatePrimaryResidentsAsync();
     }
 }

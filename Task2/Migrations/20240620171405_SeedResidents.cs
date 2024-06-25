@@ -1,31 +1,24 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
 namespace Task2.Migrations
 {
-    /// <inheritdoc />
     public partial class SeedResidents : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.InsertData(
                 table: "Residents",
-                columns: new[] { "Id", "ApartmentId", "Birthday", "Email", "LastName", "Name", "PersonalNumber", "PhoneNumber" },
+                columns: new[] { "Id", "ApartmentId", "Birthday", "Email", "LastName", "Name", "PersonalNumber", "PhoneNumber", "IsOwner" },
                 values: new object[,]
                 {
-                    { 1, 1, new DateOnly(1985, 4, 23), "john.doe@example.com", "Doe", "John", "12345-67890", 27497659 },
-                    { 2, 2, new DateOnly(1985, 8, 20), "jane.smith@example.com", "Smith", "Jane", "09876-54321", 274547639 },
-                    { 3, 2, new DateOnly(1982, 10, 12), "michael.johnson@example.com", "Johnson", "Michael", "24680-13579", 23494655 },
-                    { 4, 3, new DateOnly(1995, 3, 25), "emily.williams@example.com", "Williams", "Emily", "13579-24680", 26497153 }
+                    { 1, 1, new DateTime(1985, 4, 23), "john.doe@example.com", "Doe", "John", "12345-67890", 27497659, true },
+                    { 2, 2, new DateTime(1985, 8, 20), "jane.smith@example.com", "Smith", "Jane", "09876-54321", 274547639, true },
+                    { 3, 2, new DateTime(1982, 10, 12), "michael.johnson@example.com", "Johnson", "Michael", "24680-13579", 23494655, false },
+                    { 4, 3, new DateTime(1995, 3, 25), "emily.williams@example.com", "Williams", "Emily", "13579-24680", 26497153, true }
                 });
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DeleteData(

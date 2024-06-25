@@ -61,4 +61,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.Urls.Add("http://*:5042");
+
 app.Run();

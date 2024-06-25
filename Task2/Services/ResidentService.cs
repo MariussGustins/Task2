@@ -31,12 +31,12 @@ namespace Task2.Services
 
         public async Task<int> CreateResidentAsync(ResidentDto residentDto)
         {
-            var resident = _mapper.Map<Resident>(residentDto);
+            var residentEntity = _mapper.Map<Resident>(residentDto);
 
-            _context.Residents.Add(resident);
+            _context.Residents.Add(residentEntity);
             await _context.SaveChangesAsync();
 
-            return resident.Id;
+            return residentEntity.Id;
         }
 
         public async Task<bool> UpdateResidentAsync(int id, ResidentDto residentDto)

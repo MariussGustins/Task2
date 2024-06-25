@@ -17,6 +17,6 @@ namespace Task2.Models
         
         public bool IsOwner { get; set; }
         
-        public ICollection<Apartment> Apartments { get; set; }
+        // public ICollection<Apartment> Apartments { get; set; }
     }
 }

@@ -29,6 +29,8 @@
     <Compile Remove="Migrations\20240621112014_FixApartmentConfiguration.Designer.cs" />
     <Compile Remove="Migrations\20240621111623_FixPrimaryResidentIdColumn.cs" />
     <Compile Remove="Migrations\20240621111623_FixPrimaryResidentIdColumn.Designer.cs" />
+    <Compile Remove="Migrations\20240621112413_AddIsOwnerColumn.cs" />
+    <Compile Remove="Migrations\20240621112413_AddIsOwnerColumn.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

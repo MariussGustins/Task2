@@ -71,5 +71,26 @@ namespace Task2.Services
         {
             return await _context.Apartments.AnyAsync(e => e.Id == id);
         }
+        public async Task UpdatePrimaryResidentsAsync()
+        {
+            var apartments = await _context.Apartments.ToListAsync();
+
+            foreach (var apartment in apartments)
+            {
+                var primaryResident = await _context.Residents
+                    .FirstOrDefaultAsync(r => r.IsOwner && r.ApartmentId == apartment.Id);
+
+                if (primaryResident != null)
+                {
+                    apartment.PrimaryResidentId = primaryResident.Id;
+                }
+                else
+                {
+                    apartment.PrimaryResidentId = null; 
+                }
+            }
+
+            await _context.SaveChangesAsync();
+        }
     }
 }
