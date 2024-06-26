@@ -9,10 +9,12 @@ namespace Task2.Controllers
     public class ApartmentsController : ControllerBase
     {
         private readonly IApartmentService _apartmentService;
+        private readonly IResidentService _residentService;
 
-        public ApartmentsController(IApartmentService apartmentService)
+        public ApartmentsController(IApartmentService apartmentService, IResidentService residentService)
         {
             _apartmentService = apartmentService;
+            _residentService = residentService;
         }
 
 
@@ -29,6 +31,12 @@ namespace Task2.Controllers
                 apartments = await _apartmentService.GetApartmentsAsync();
             }
             return Ok(apartments);
+        }
+        [HttpGet("{id}/Residents")]
+        public async Task<ActionResult<IEnumerable<ResidentDto>>> GetResidentsByApartmentId(int apartmentId)
+        {
+            var residents = await _residentService.GetResidentsByApartmentIdAsync(apartmentId);
+            return Ok(residents);
         }
 
         [HttpGet("{id}")]
