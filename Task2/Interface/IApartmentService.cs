@@ -9,6 +9,7 @@ namespace Task2.Interface
     public interface IApartmentService
     {
         Task<IEnumerable<ApartmentDto>> GetApartmentsAsync();
+        Task<IEnumerable<ApartmentDto>> GetApartmentsByHouseIdAsync(int houseId);
         Task<ApartmentDto> GetApartmentAsync(int id);
         Task<int> CreateApartmentAsync(ApartmentDto apartmentDto);
         Task<bool> UpdateApartmentAsync(int id, ApartmentDto apartmentDto);

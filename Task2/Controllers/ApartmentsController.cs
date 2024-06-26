@@ -15,10 +15,19 @@ namespace Task2.Controllers
             _apartmentService = apartmentService;
         }
 
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ApartmentDto>>> GetApartments()
+        public async Task<ActionResult<IEnumerable<ApartmentDto>>> GetApartments([FromQuery] int? houseId)
         {
-            var apartments = await _apartmentService.GetApartmentsAsync();
+            IEnumerable<ApartmentDto> apartments;
+            if (houseId.HasValue)
+            {
+                apartments = await _apartmentService.GetApartmentsByHouseIdAsync(houseId.Value);
+            }
+            else
+            {
+                apartments = await _apartmentService.GetApartmentsAsync();
+            }
             return Ok(apartments);
         }
 

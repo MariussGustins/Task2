@@ -17,9 +17,17 @@ namespace Task2.Services
             _mapper = mapper;
         }
 
+
         public async Task<IEnumerable<ApartmentDto>> GetApartmentsAsync()
         {
             var apartments = await _context.Apartments.ToListAsync();
+            return _mapper.Map<IEnumerable<ApartmentDto>>(apartments);
+        }
+        public async Task<IEnumerable<ApartmentDto>> GetApartmentsByHouseIdAsync(int houseId)
+        {
+            var apartments = await _context.Apartments
+                .Where(a => a.HouseId == houseId)
+                .ToListAsync();
             return _mapper.Map<IEnumerable<ApartmentDto>>(apartments);
         }
 
