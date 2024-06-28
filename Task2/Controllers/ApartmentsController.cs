@@ -9,17 +9,34 @@ namespace Task2.Controllers
     public class ApartmentsController : ControllerBase
     {
         private readonly IApartmentService _apartmentService;
+        private readonly IResidentService _residentService;
 
-        public ApartmentsController(IApartmentService apartmentService)
+        public ApartmentsController(IApartmentService apartmentService, IResidentService residentService)
         {
             _apartmentService = apartmentService;
+            _residentService = residentService;
         }
 
+
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ApartmentDto>>> GetApartments()
+        public async Task<ActionResult<IEnumerable<ApartmentDto>>> GetApartments([FromQuery] int? houseId)
         {
-            var apartments = await _apartmentService.GetApartmentsAsync();
+            IEnumerable<ApartmentDto> apartments;
+            if (houseId.HasValue)
+            {
+                apartments = await _apartmentService.GetApartmentsByHouseIdAsync(houseId.Value);
+            }
+            else
+            {
+                apartments = await _apartmentService.GetApartmentsAsync();
+            }
             return Ok(apartments);
+        }
+        [HttpGet("{id}/Residents")]
+        public async Task<ActionResult<IEnumerable<ResidentDto>>> GetResidentsByApartmentId(int apartmentId)
+        {
+            var residents = await _residentService.GetResidentsByApartmentIdAsync(apartmentId);
+            return Ok(residents);
         }
 
         [HttpGet("{id}")]
@@ -53,6 +70,20 @@ namespace Task2.Controllers
         {
             var apartmentId = await _apartmentService.CreateApartmentAsync(apartmentDto);
             return CreatedAtAction(nameof(GetApartment), new { id = apartmentId }, null);
+        }
+        
+        [HttpPost("update-primary-residents")]
+        public async Task<IActionResult> UpdatePrimaryResidents()
+        {
+            try
+            {
+                await _apartmentService.UpdatePrimaryResidentsAsync();
+                return Ok("Primary residents updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
         }
 
         [HttpDelete("{id}")]

@@ -17,9 +17,17 @@ namespace Task2.Services
             _mapper = mapper;
         }
 
+
         public async Task<IEnumerable<ApartmentDto>> GetApartmentsAsync()
         {
             var apartments = await _context.Apartments.ToListAsync();
+            return _mapper.Map<IEnumerable<ApartmentDto>>(apartments);
+        }
+        public async Task<IEnumerable<ApartmentDto>> GetApartmentsByHouseIdAsync(int houseId)
+        {
+            var apartments = await _context.Apartments
+                .Where(a => a.HouseId == houseId)
+                .ToListAsync();
             return _mapper.Map<IEnumerable<ApartmentDto>>(apartments);
         }
 
@@ -70,6 +78,27 @@ namespace Task2.Services
         public async Task<bool> ApartmentExistsAsync(int id)
         {
             return await _context.Apartments.AnyAsync(e => e.Id == id);
+        }
+        public async Task UpdatePrimaryResidentsAsync()
+        {
+            var apartments = await _context.Apartments.ToListAsync();
+
+            foreach (var apartment in apartments)
+            {
+                var primaryResident = await _context.Residents
+                    .FirstOrDefaultAsync(r => r.IsOwner && r.ApartmentId == apartment.Id);
+
+                if (primaryResident != null)
+                {
+                    apartment.PrimaryResidentId = primaryResident.Id;
+                }
+                else
+                {
+                    apartment.PrimaryResidentId = null; 
+                }
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

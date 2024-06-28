@@ -51,6 +51,7 @@ namespace Task2.Controllers
         [HttpPost]
         public async Task<ActionResult<ResidentDto>> PostResident(ResidentDto residentDto)
         {
+            
             var residentId = await _residentService.CreateResidentAsync(residentDto);
             return CreatedAtAction(nameof(GetResident), new { id = residentId }, null);
         }

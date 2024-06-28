@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Task2.Interface;
 using Task2.DTOs;
+using Task2.Services;
 
 namespace Task2.Controllers
 {
@@ -9,10 +10,12 @@ namespace Task2.Controllers
     public class HousesController : ControllerBase
     {
         private readonly IHousesService _housesService;
+        private readonly IApartmentService _apartmentService;
 
-        public HousesController(IHousesService housesService)
+        public HousesController(IHousesService housesService, IApartmentService apartmentService) 
         {
             _housesService = housesService;
+            _apartmentService = apartmentService; 
         }
 
         [HttpGet]
@@ -21,6 +24,13 @@ namespace Task2.Controllers
             var houses = await _housesService.GetHousesAsync();
             return Ok(houses);
         }
+        [HttpGet("{id}/Apartments")] 
+        public async Task<ActionResult<IEnumerable<ApartmentDto>>> GetApartmentsByHouseId(int id)
+        {
+            var apartments = await _apartmentService.GetApartmentsByHouseIdAsync(id);
+            return Ok(apartments);
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<HouseDto>> GetHouse(int id)

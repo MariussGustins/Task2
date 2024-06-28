@@ -10,6 +10,10 @@
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.6" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.6" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.6">
@@ -29,6 +33,8 @@
     <Compile Remove="Migrations\20240621112014_FixApartmentConfiguration.Designer.cs" />
     <Compile Remove="Migrations\20240621111623_FixPrimaryResidentIdColumn.cs" />
     <Compile Remove="Migrations\20240621111623_FixPrimaryResidentIdColumn.Designer.cs" />
+    <Compile Remove="Migrations\20240621112413_AddIsOwnerColumn.cs" />
+    <Compile Remove="Migrations\20240621112413_AddIsOwnerColumn.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>

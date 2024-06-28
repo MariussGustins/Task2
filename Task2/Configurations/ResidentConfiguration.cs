@@ -19,9 +19,9 @@ namespace Task2.Configurations
 
             
             // Relationships
-            builder.HasMany(r => r.Apartments)
-                .WithOne(a => a.PrimaryResident)
-                .HasForeignKey(a => a.PrimaryResidentId)
+            builder.HasOne(r => r.Apartment)
+                .WithMany(a => a.Residents) 
+                .HasForeignKey(r => r.ApartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

@@ -43,13 +43,13 @@ namespace Task2.Models
                 .HasOne(a => a.PrimaryResident)
                 .WithMany()
                 .HasForeignKey(a => a.PrimaryResidentId)
-                .OnDelete(DeleteBehavior.NoAction); // Ensure correct delete behavior
+                .OnDelete(DeleteBehavior.NoAction); 
 
             modelBuilder.Entity<Apartment>()
                 .HasMany(a => a.Residents)
                 .WithOne(r => r.Apartment)
                 .HasForeignKey(r => r.ApartmentId)
-                .OnDelete(DeleteBehavior.Cascade); // Ensure correct delete behavior
+                .OnDelete(DeleteBehavior.Cascade); 
 
             modelBuilder.Entity<Resident>()
                 .HasKey(r => r.Id);
@@ -57,6 +57,12 @@ namespace Task2.Models
             modelBuilder.Entity<Resident>()
                 .Property(r => r.Id)
                 .ValueGeneratedOnAdd();
+            
+            modelBuilder.Entity<Resident>()
+                .Property(r => r.IsOwner)
+                .HasColumnName("IsOwner")
+                .IsRequired()
+                .HasDefaultValue(false);
 
             modelBuilder.Entity<Resident>()
                 .HasIndex(r => r.PersonalNumber)
@@ -95,7 +101,8 @@ namespace Task2.Models
                     NumberOfResidents = 2,
                     FullArea = 40.5,
                     LivingArea = 38.5,
-                    HouseId = 1
+                    HouseId = 1,
+                    PrimaryResidentId = 1
 
                 },
                 new Apartment
@@ -107,7 +114,8 @@ namespace Task2.Models
                     NumberOfResidents = 2,
                     FullArea = 70.5,
                     LivingArea = 68.5,
-                    HouseId = 1
+                    HouseId = 1,
+                    PrimaryResidentId = 2
                 },
                 new Apartment
                 {
@@ -118,7 +126,8 @@ namespace Task2.Models
                     NumberOfResidents = 2,
                     FullArea = 93.5,
                     LivingArea = 86.5,
-                    HouseId = 2
+                    HouseId = 2,
+                    PrimaryResidentId = null
                 },
                 new Apartment
                 {
@@ -130,6 +139,7 @@ namespace Task2.Models
                     FullArea = 80.5,
                     LivingArea = 68.5,
                     HouseId = 2,
+                    PrimaryResidentId = null
                 },
                 new Apartment
                 {
@@ -140,7 +150,8 @@ namespace Task2.Models
                 NumberOfResidents = 1,
                 FullArea = 50,
                 LivingArea = 45.9,
-                HouseId = 2
+                HouseId = 2,
+                PrimaryResidentId = 3
         }
         );
             

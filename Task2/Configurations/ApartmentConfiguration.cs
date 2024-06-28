@@ -13,7 +13,7 @@ namespace Task2.Configurations
             builder.Property(a => a.Number).IsRequired();
             builder.Property(a => a.Floor).IsRequired();
 
-            // Relationships
+            
             builder.HasMany(a => a.Residents)
                 .WithOne(r => r.Apartment)
                 .HasForeignKey(r => r.ApartmentId)

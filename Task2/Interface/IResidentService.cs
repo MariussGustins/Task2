@@ -6,6 +6,7 @@ namespace Task2.Interface
     public interface IResidentService
     {
         Task<IEnumerable<ResidentDto>> GetResidentsAsync();
+        Task<IEnumerable<ResidentDto>> GetResidentsByApartmentIdAsync(int apartmentId);
         Task<ResidentDto> GetResidentAsync(int id);
         Task<int> CreateResidentAsync(ResidentDto residentDto);
         Task<bool> UpdateResidentAsync(int id, ResidentDto residentDto);
