@@ -16,7 +16,6 @@ namespace Task2.Models
         public House House { get; set; }
         public int? PrimaryResidentId { get; set; }
         public Resident PrimaryResident { get; set; }
-
         public ICollection<Resident> Residents { get; set; }
         
         

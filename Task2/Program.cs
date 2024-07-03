@@ -26,6 +26,7 @@ builder.Services.AddSingleton(mapper);
 builder.Services.AddScoped<IHousesService, HousesService>();
 builder.Services.AddScoped<IResidentService, ResidentsService>();
 builder.Services.AddScoped<IApartmentService, ApartmentService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // CORS configuration
 builder.Services.AddCors(options =>
