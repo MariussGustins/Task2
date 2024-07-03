@@ -79,6 +79,20 @@ namespace Task2.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+            
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                });
 
             migrationBuilder.InsertData(
                 table: "Houses",
@@ -111,6 +125,8 @@ namespace Task2.Migrations
 
             migrationBuilder.DropTable(
                 name: "Houses");
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

@@ -2,6 +2,7 @@
 {
     public class ResidentDto
     {
+        public int Id { get; set; }
         public string Name { get; set; }
         public string LastName { get; set; }
         public string PersonalNumber { get; set; }
@@ -9,5 +10,6 @@
         public int PhoneNumber { get; set; }
         public string Email { get; set; }
         public bool IsOwner { get; set; }
+        public int ApartmentId { get; set; }
     }
 }

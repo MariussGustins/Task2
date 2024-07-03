@@ -11,7 +11,8 @@ namespace Task2.Mappings
             CreateMap<Resident, ResidentDto>().ReverseMap();
             CreateMap<House, HouseDto>().ReverseMap();
             CreateMap<Apartment, ApartmentDto>().ReverseMap();
-            
+            CreateMap<User, UserDto>().ReverseMap();
+
         }
     }
 }
