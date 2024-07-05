@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Task2.Interface;
 using Task2.DTOs;
 
@@ -36,6 +37,7 @@ namespace Task2.Controllers
         }
 
         [HttpPut("{id}")]
+        // [Authorize(Roles = "Manager, Resident")]
         public async Task<IActionResult> PutResident(int id, ResidentDto residentDto)
         {
             var result = await _residentService.UpdateResidentAsync(id, residentDto);
@@ -49,6 +51,7 @@ namespace Task2.Controllers
         }
 
         [HttpPost]
+        // [Authorize(Roles = "Manager")]
         public async Task<ActionResult<ResidentDto>> PostResident(ResidentDto residentDto)
         {
             
@@ -57,6 +60,7 @@ namespace Task2.Controllers
         }
 
         [HttpDelete("{id}")]
+        // [Authorize(Roles = "Manager")]
         public async Task<IActionResult> DeleteResident(int id)
         {
             var residentExists = await _residentService.ResidentExistsAsync(id);

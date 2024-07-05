@@ -1,5 +1,6 @@
 using Task2.Interface;
 using Task2.DTOs;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Task2.Controllers
