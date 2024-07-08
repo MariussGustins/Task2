@@ -30,6 +30,7 @@ builder.Services.AddScoped<IHousesService, HousesService>();
 builder.Services.AddScoped<IResidentService, ResidentsService>();
 builder.Services.AddScoped<IApartmentService, ApartmentService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddTransient<MigrationService>();
 
 // CORS configuration
 builder.Services.AddCors(options =>

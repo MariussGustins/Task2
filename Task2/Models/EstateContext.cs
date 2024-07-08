@@ -22,6 +22,11 @@ namespace Task2.Models
             modelBuilder.ApplyConfiguration(new ResidentConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
+            modelBuilder.Entity<Resident>()
+              .HasOne(r => r.User)
+              .WithMany()
+              .HasForeignKey(r => r.UserId);
+
             modelBuilder.Entity<House>()
                 .HasKey(h => h.Id);
 

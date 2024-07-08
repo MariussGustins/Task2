@@ -1,4 +1,6 @@
-﻿namespace Task2.DTOs
+﻿using Task2.Models;
+
+namespace Task2.DTOs
 {
     public class ResidentDto
     {
@@ -11,5 +13,7 @@
         public string Email { get; set; }
         public bool IsOwner { get; set; }
         public int ApartmentId { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
