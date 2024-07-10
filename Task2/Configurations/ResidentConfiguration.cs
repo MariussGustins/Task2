@@ -25,7 +25,6 @@ namespace Task2.Configurations
                 .HasForeignKey(r => r.ApartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Optional: If you want to configure the relationship with User (assuming it's a one-to-one)
             builder.HasOne(r => r.User)
                 .WithOne()
                 .HasForeignKey<Resident>(r => r.UserId)

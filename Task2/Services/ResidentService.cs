@@ -75,13 +75,13 @@ namespace Task2.Services
                 {
                     var username = $"{resident.Name}{resident.LastName}";
                     var password = GeneratePassword();
-                    var email = resident.Email; // Fetch email from Resident entity
+                    var email = resident.Email; 
 
                     var user = new User
                     {
                         Username = username,
                         Password = password,
-                        Email = email // Set email for User entity
+                        Email = email 
                     };
 
                     _context.Users.Add(user);
@@ -97,8 +97,7 @@ namespace Task2.Services
 
         public async Task<bool> UpdateResidentAsync(string id, ResidentDto residentDto)
         {
-            // Parse the ID to the appropriate type (e.g., int, Guid) based on your implementation
-            // For example, if your Resident ID is an integer:
+            
             if (!int.TryParse(id, out int residentId))
             {
                 throw new ArgumentException("Invalid resident ID format.");
@@ -158,7 +157,7 @@ namespace Task2.Services
 
         private string GeneratePassword()
         {
-            return "DefaultPassword123"; // Implement your password generation logic
+            return "DefaultPassword123"; 
         }
         
         public async Task<ResidentDto> GetResidentByEmailAsync(string email)
