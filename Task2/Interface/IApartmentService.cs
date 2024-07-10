@@ -17,5 +17,6 @@ namespace Task2.Interface
         Task<bool> ApartmentExistsAsync(int id);
         
         Task UpdatePrimaryResidentsAsync();
+        Task<ApartmentDto> GetApartmentByUserEmailAsync(string userEmail);
     }
 }

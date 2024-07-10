@@ -1,31 +1,52 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Task2.Interface;
 using Task2.DTOs;
+using Task2.Models;
 using Task2.Services;
 
 namespace Task2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    // [Authorize]
     public class HousesController : ControllerBase
     {
         private readonly IHousesService _housesService;
         private readonly IApartmentService _apartmentService;
+        private readonly IUserService _userService;
+        private readonly EstateContext _context;
 
-        public HousesController(IHousesService housesService, IApartmentService apartmentService)
+        public HousesController(IHousesService housesService, IApartmentService apartmentService, IUserService userService)
         {
             _housesService = housesService;
             _apartmentService = apartmentService;
+            _userService = userService;
         }
 
         [HttpGet]
-        // [Authorize(Policy = "ReadHouses")]
         public async Task<IActionResult> GetHouses()
         {
             var houses = await _housesService.GetHousesAsync();
             return Ok(houses);
+        }
+
+        [HttpGet("{email}/house")]
+        public async Task<IActionResult> GetHouseByEmailAsync(string email)
+        {
+            if (string.IsNullOrEmpty(email))
+            {
+                return BadRequest("Email cannot be null or empty.");
+            }
+
+            var houseDto = await _housesService.GetHouseByEmailAsync(email);
+
+            if (houseDto == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(houseDto);
         }
 
         [HttpGet("{id}/Apartments")]

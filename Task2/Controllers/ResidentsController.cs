@@ -35,10 +35,34 @@ namespace Task2.Controllers
 
             return Ok(resident);
         }
+        [HttpGet("by-email/{email}")]
+        public async Task<ActionResult<ResidentDto>> GetResidentByEmail(string email)
+        {
+            var resident = await _residentService.GetResidentByEmailAsync(email);
+
+            if (resident == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(resident);
+        }
+        [HttpGet("apartment/{apartmentId}/email/{email}")]
+        public async Task<ActionResult<IEnumerable<ResidentDto>>> GetResidentsByApartmentIdAndEmail(int apartmentId, string email)
+        {
+            var residents = await _residentService.GetResidentsByApartmentIdAndEmailAsync(apartmentId, email);
+
+            if (residents == null || !residents.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(residents);
+        }
 
         [HttpPut("{id}")]
         // [Authorize(Roles = "Manager, Resident")]
-        public async Task<IActionResult> PutResident(int id, ResidentDto residentDto)
+        public async Task<IActionResult> PutResident(string id, ResidentDto residentDto)
         {
             var result = await _residentService.UpdateResidentAsync(id, residentDto);
 
@@ -49,6 +73,12 @@ namespace Task2.Controllers
 
             return NoContent();
         }
+        [HttpPost("create-users")]
+        public async Task<IActionResult> CreateUsersForResidents()
+        {
+            await _residentService.CreateUsersForResidentsAsync();
+            return Ok(new { message = "User accounts created for all residents" });
+        }
 
         [HttpPost]
         // [Authorize(Roles = "Manager")]
@@ -58,6 +88,19 @@ namespace Task2.Controllers
             var residentId = await _residentService.CreateResidentAsync(residentDto);
             return CreatedAtAction(nameof(GetResident), new { id = residentId }, null);
         }
+        // [HttpPost("update-residents-passwords")]
+        // public async Task<IActionResult> UpdateResidentsPasswords()
+        // {
+        //     try
+        //     {
+        //         await _residentService.UpdateResidentsWithUserPasswordsAsync();
+        //         return Ok("Residents' passwords updated successfully.");
+        //     }
+        //     catch (Exception ex)
+        //     {
+        //         return StatusCode(500, $"An error occurred: {ex.Message}");
+        //     }
+        // }
 
         [HttpDelete("{id}")]
         // [Authorize(Roles = "Manager")]

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Task2.Models;
 
@@ -11,9 +12,11 @@ using Task2.Models;
 namespace Task2.Migrations
 {
     [DbContext(typeof(EstateContext))]
-    partial class EstateContextModelSnapshot : ModelSnapshot
+    [Migration("20240708110841_MakeUserIdNullable")]
+    partial class MakeUserIdNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -61,6 +64,66 @@ namespace Task2.Migrations
                     b.HasIndex("PrimaryResidentId");
 
                     b.ToTable("Apartments");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Floor = 2,
+                            FullArea = 40.5,
+                            HouseId = 1,
+                            LivingArea = 38.5,
+                            Number = 5,
+                            NumberOfResidents = 2,
+                            PrimaryResidentId = 1,
+                            Rooms = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Floor = 2,
+                            FullArea = 70.5,
+                            HouseId = 1,
+                            LivingArea = 68.5,
+                            Number = 3,
+                            NumberOfResidents = 2,
+                            PrimaryResidentId = 2,
+                            Rooms = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Floor = 1,
+                            FullArea = 93.5,
+                            HouseId = 2,
+                            LivingArea = 86.5,
+                            Number = 1,
+                            NumberOfResidents = 2,
+                            Rooms = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Floor = 1,
+                            FullArea = 80.5,
+                            HouseId = 2,
+                            LivingArea = 68.5,
+                            Number = 2,
+                            NumberOfResidents = 1,
+                            Rooms = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Floor = 2,
+                            FullArea = 50.0,
+                            HouseId = 2,
+                            LivingArea = 45.899999999999999,
+                            Number = 6,
+                            NumberOfResidents = 1,
+                            PrimaryResidentId = 3,
+                            Rooms = 1
+                        });
                 });
 
             modelBuilder.Entity("Task2.Models.House", b =>
@@ -94,6 +157,26 @@ namespace Task2.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Houses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            City = "Springfield",
+                            Country = "USA",
+                            Number = "123",
+                            Postcode = "12345",
+                            Street = "Elm Street"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            City = "Springfield",
+                            Country = "USA",
+                            Number = "456",
+                            Postcode = "67890",
+                            Street = "Maple Avenue"
+                        });
                 });
 
             modelBuilder.Entity("Task2.Models.Resident", b =>
@@ -128,10 +211,6 @@ namespace Task2.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PersonalNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
@@ -142,10 +221,6 @@ namespace Task2.Migrations
                     b.Property<int?>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ApartmentId");
@@ -153,9 +228,7 @@ namespace Task2.Migrations
                     b.HasIndex("PersonalNumber")
                         .IsUnique();
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasFilter("[UserId] IS NOT NULL");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Residents");
 
@@ -169,11 +242,8 @@ namespace Task2.Migrations
                             IsOwner = true,
                             LastName = "Doe",
                             Name = "John",
-                            Password = "DefaultPassword123",
                             PersonalNumber = "12345-67890",
-                            PhoneNumber = 27497659,
-                            UserId = 2,
-                            Username = "JohnDoe"
+                            PhoneNumber = 27497659
                         },
                         new
                         {
@@ -184,11 +254,8 @@ namespace Task2.Migrations
                             IsOwner = true,
                             LastName = "Smith",
                             Name = "Jane",
-                            Password = "DefaultPassword123",
                             PersonalNumber = "09876-54321",
-                            PhoneNumber = 274547639,
-                            UserId = 3,
-                            Username = "JaneSmith"
+                            PhoneNumber = 274547639
                         },
                         new
                         {
@@ -199,11 +266,8 @@ namespace Task2.Migrations
                             IsOwner = false,
                             LastName = "Johnson",
                             Name = "Michael",
-                            Password = "DefaultPassword123",
                             PersonalNumber = "24680-13579",
-                            PhoneNumber = 23494655,
-                            UserId = 4,
-                            Username = "MichealJohnson"
+                            PhoneNumber = 23494655
                         },
                         new
                         {
@@ -214,11 +278,8 @@ namespace Task2.Migrations
                             IsOwner = true,
                             LastName = "Williams",
                             Name = "Emily",
-                            Password = "DefaultPassword123",
                             PersonalNumber = "13579-24680",
-                            PhoneNumber = 26497153,
-                            UserId = 5,
-                            Username = "EmilyWilliams"
+                            PhoneNumber = 26497153
                         });
                 });
 
@@ -229,10 +290,6 @@ namespace Task2.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -258,7 +315,7 @@ namespace Task2.Migrations
                     b.HasOne("Task2.Models.Resident", "PrimaryResident")
                         .WithMany()
                         .HasForeignKey("PrimaryResidentId")
-                        .OnDelete(DeleteBehavior.Restrict);
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.Navigation("House");
 
@@ -270,13 +327,12 @@ namespace Task2.Migrations
                     b.HasOne("Task2.Models.Apartment", "Apartment")
                         .WithMany("Residents")
                         .HasForeignKey("ApartmentId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Task2.Models.User", "User")
-                        .WithOne()
-                        .HasForeignKey("Task2.Models.Resident", "UserId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Apartment");
 

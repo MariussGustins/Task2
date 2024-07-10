@@ -16,13 +16,21 @@ namespace Task2.Configurations
             builder.Property(r => r.Birthday).IsRequired();
             builder.Property(r => r.PhoneNumber).IsRequired();
             builder.Property(r => r.Email).IsRequired();
+            builder.Property(r => r.Username).IsRequired(); 
+            builder.Property(r => r.Password).IsRequired(); 
 
-            
             // Relationships
             builder.HasOne(r => r.Apartment)
-                .WithMany(a => a.Residents) 
+                .WithMany(a => a.Residents)
                 .HasForeignKey(r => r.ApartmentId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            // Optional: If you want to configure the relationship with User (assuming it's a one-to-one)
+            builder.HasOne(r => r.User)
+                .WithOne()
+                .HasForeignKey<Resident>(r => r.UserId)
+                .IsRequired(false) // Allow null UserId if no associated User
+                .OnDelete(DeleteBehavior.SetNull); // Set UserId to null if User is deleted
         }
     }
 }

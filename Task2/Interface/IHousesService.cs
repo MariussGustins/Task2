@@ -13,6 +13,7 @@ namespace Task2.Interface
         Task<bool> DeleteHouseAsync(int id);
 
         Task<bool> HouseExistsAsync(int id);
+        Task<HouseDto> GetHouseByEmailAsync(string email);
     }
 
 

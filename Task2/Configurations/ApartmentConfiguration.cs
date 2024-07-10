@@ -18,6 +18,10 @@ namespace Task2.Configurations
                 .WithOne(r => r.Apartment)
                 .HasForeignKey(r => r.ApartmentId)
                 .OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(a => a.PrimaryResident)
+                .WithMany()
+                .HasForeignKey(a => a.PrimaryResidentId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

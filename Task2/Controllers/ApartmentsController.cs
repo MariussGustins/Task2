@@ -52,6 +52,18 @@ namespace Task2.Controllers
 
             return Ok(apartment);
         }
+        [HttpGet("ByUserEmail/{userEmail}")]
+        public async Task<ActionResult<ApartmentDto>> GetApartmentByUserEmail(string userEmail)
+        {
+            var apartment = await _apartmentService.GetApartmentByUserEmailAsync(userEmail);
+
+            if (apartment == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(apartment);
+        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutApartment(int id, ApartmentDto apartmentDto)

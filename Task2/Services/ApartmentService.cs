@@ -100,5 +100,18 @@ namespace Task2.Services
 
             await _context.SaveChangesAsync();
         }
+        public async Task<ApartmentDto> GetApartmentByUserEmailAsync(string userEmail)
+        {
+            var resident = await _context.Residents
+                .Include(r => r.Apartment)
+                .FirstOrDefaultAsync(r => r.User.Email == userEmail);
+
+            if (resident == null || resident.Apartment == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<ApartmentDto>(resident.Apartment);
+        }
     }
 }

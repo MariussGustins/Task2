@@ -32,38 +32,31 @@ namespace Task2.Services
         public async Task<int> CreateHouseAsync(HouseDto houseDto)
         {
             var house = _mapper.Map<House>(houseDto);
-
             _context.Houses.Add(house);
             await _context.SaveChangesAsync();
-
             return house.Id;
         }
 
         public async Task<bool> UpdateHouseAsync(int id, HouseDto houseDto)
         {
             var house = await _context.Houses.FindAsync(id);
-
             if (house == null)
                 return false;
 
             _mapper.Map(houseDto, house);
-
             _context.Entry(house).State = EntityState.Modified;
             await _context.SaveChangesAsync();
-
             return true;
         }
 
         public async Task<bool> DeleteHouseAsync(int id)
         {
             var house = await _context.Houses.FindAsync(id);
-
             if (house == null)
                 return false;
 
             _context.Houses.Remove(house);
             await _context.SaveChangesAsync();
-
             return true;
         }
 
@@ -71,5 +64,24 @@ namespace Task2.Services
         {
             return await _context.Houses.AnyAsync(e => e.Id == id);
         }
+
+        
+
+
+        public async Task<HouseDto> GetHouseByEmailAsync(string email)
+        {
+            var resident = await _context.Residents
+                .Include(r => r.Apartment)
+                .ThenInclude(a => a.House)
+                .FirstOrDefaultAsync(r => r.User.Email == email);
+
+            if (resident == null || resident.Apartment == null || resident.Apartment.House == null)
+            {
+                return null;
+            }
+
+            return _mapper.Map<HouseDto>(resident.Apartment.House);
+        }
+
     }
 }

@@ -14,7 +14,9 @@ namespace Task2.Models
         public int ApartmentId { get; set; }
         public Apartment Apartment { get; set; }
         public bool IsOwner { get; set; }
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
         public User User { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 }
